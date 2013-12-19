@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Geoeditor</title>
+        <meta charset="UTF-8">
+        <link type="text/css" rel="stylesheet" media="all" href="style.css" />
+        <link type="text/css" rel="stylesheet" media="all" href="jsxgraph.css" />
+        <script type="text/javascript" src="jquery.min.js"></script>
+        <script type="text/javascript" src="jsxgraphcore.js"></script>
+        <script type="text/javascript" src="js/gedit.js"></script>
+        <script type="text/javascript">
+            jQuery(function(){
+                var aaa = {
+                    editable: true,
+                    width: 400,
+                    height: 300,
+                    browsingMode: 'tabs',
+                    scenes: [
+                        {
+                            "type": "Scene",
+                            "objects": [
+                                {
+                                    "type": "Point",
+                                    "geoid": "GeoPoint_{0}",
+                                    "size": 3,
+                                    "x": -1,
+                                    "y": 3,
+                                    "name": "A",
+                                    "showName": true,
+                                    "visible": true,
+                                    "fixed": false,
+                                    "color": "#ff0000"
+                                },
+                                {
+                                    "type": "Point",
+                                    "geoid": "GeoPoint_{1}",
+                                    "size": 3,
+                                    "x": 0,
+                                    "y": 0,
+                                    "name": "B",
+                                    "showName": true,
+                                    "visible": true,
+                                    "fixed": false,
+                                    "color": "#ff0000"
+                                },
+                                {
+                                    "type": "Point",
+                                    "geoid": "GeoPoint_{2}",
+                                    "size": 3,
+                                    "x": 6,
+                                    "y": 0,
+                                    "name": "C",
+                                    "showName": true,
+                                    "visible": true,
+                                    "fixed": false,
+                                    "color": "#ff0000"
+                                },
+                                {
+                                    "type": "Circle",
+                                    "geoid": "GeoCircle_{0}",
+                                    "name": "c1",
+                                    "p1": "GeoPoint_{0}",
+                                    "p2": "GeoPoint_{1}"
+                                },
+                                {
+                                    "type": "Glider",
+                                    "geoid": "GeoGlider_{0}",
+                                    "name": "P",
+                                    "parent": "GeoCircle_{0}"
+                                },
+                                {
+                                    "type": "Tangent",
+                                    "geoid": "GeoTangent_{0}",
+                                    "name": "t",
+                                    "p1": "GeoCircle_{0}",
+                                    "p2": "GeoPoint_{2}"
+                                }
+                            ],
+                            "name": "Näkymä 1",
+                            "boundingBox": [
+                                -10,
+                                5,
+                                10,
+                                -5
+                            ],
+                            "description": "1",
+                            "showGrid": false,
+                            "isStatic": false,
+                            "allowControls": true
+                        }
+                    ]
+                }
+                var bbb = {};
+                jQuery('#display1').geditor(bbb);
+                jQuery('#display1').bind('geoeditor_changed', function(){
+                    var data = jQuery(this).geditor('getdata');
+                    jQuery('#databox').val(JSON.stringify(data, null, 4));
+                    jQuery('body').append('<span>.</span>');
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <div class="content">
+            <h1>Geoeditor</h1>
+            <p>Here are couple of examples, how to use <code>geoeditor.js</code>.</p>
+            <h2>Editing</h2>
+            <p>Using <code>geoeditor</code> to show geometric constructions.</h2>
+<div class="codeexample">
+
+</div>
+            <div id="display1" lang="fi"></div>
+            
+            <textarea id="databox" style="width: 100%; height: 20em;"></textarea>
+
+    </body>
+</html>
