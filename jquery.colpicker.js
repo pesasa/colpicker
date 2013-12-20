@@ -1,11 +1,15 @@
 /***
 |Name|ColPicker|
-|Version|0.1|
+|Version|0.2|
 |Author|Petri Salmela (pesasa@iki.fi)|
 |Type|plugin|
 |Requires|jQuery 1.4.3 or newer.|
 |Description|Colorpicker widget as jQuery plugin.|
 !!!!!Revisions
+<<<
+20131219.2251 ''Version 0.2''
+* Hiddable picker, showable input, preview
+<<<
 <<<
 20131218.2251 ''Version 0.1''
 * Project starts.
@@ -54,6 +58,11 @@
          ******/
         var ColPicker = function(place, params){
             this.place = $(place);
+            this.options = $.extend({
+                width: '100%',
+                showInput: false,
+                hiddable: false
+            }, params);
             if (this.place[0].tagName === 'INPUT') {
                 this.init();
             }
@@ -67,9 +76,21 @@
                 $('head').append('<style id="colpickertoolstyle" type="text/css">'+ColPicker.strings.css+'</style>');
             }
             this.id = this.genId();
-            this.place.after('<div id="'+this.id+'" class="colpickertool">\n'+ColPicker.strings.svg+'</div>');
-            this.picker = this.place.next();
-            this.place.hide();
+            this.place.addClass('colpicker-input');
+            this.place.after('<div class="colpickertool-preview"><div class="colorpreview"></div></div>');
+            this.preview = this.place.next().children();
+            this.place.next().after('<div id="'+this.id+'" class="colpickertool">\n'+ColPicker.strings.svg+'</div>');
+            this.picker = this.place.next().next();
+            if (this.options.hiddable) {
+                this.preview.addClass('colpickertool-hidebutton');
+                this.picker.addClass('colpickertool-hiddable colpickertool-hidden');
+            }
+            var maxwidth = this.picker.parent().width();
+            var maxheight = maxwidth/2;
+            this.picker.find('svg').css({"max-width": maxwidth, "width": this.options.width, "max-height": maxheight, "height": "auto"});
+            if (!this.options.showInput) {
+                this.place.hide();
+            }
             this.getColor();
             this.initSelected();
             this.initHandlers();
@@ -86,36 +107,8 @@
                 this.color = this.rgb+this.opacity;
             } else {
                 this.opacity = '';
-                switch (color){
-                    case 'black':
-                        this.rgb = '#000000';
-                        this.color = this.rgb+this.opacity;
-                        break;
-                    case 'red':
-                        this.rgb = '#ff0000';
-                        this.color = this.rgb+this.opacity;
-                        break;
-                    case 'green':
-                        this.rgb = '#00ff00';
-                        this.color = this.rgb+this.opacity;
-                        break;
-                    case 'blue':
-                        this.rgb = '#0000ff';
-                        this.color = this.rgb+this.opacity;
-                        break;
-                    case 'yellow':
-                        this.rgb = '#ffff00';
-                        this.color = this.rgb+this.opacity;
-                        break;
-                    case 'none':
-                        this.rgb = 'none';
-                        this.color = this.rgb+this.opacity;
-                        break;
-                    default:
-                        this.rgb = '';
-                        this.color = color;
-                        break;
-                }
+                this.rgb = this.colornames[color.toLowerCase()] || '';
+                this.color = this.rgb;
             }
         }
         
@@ -152,6 +145,12 @@
                 this.picker.find('[data-opacity="ff"]').attr('data-selected-opacity', 'true');
             }
             this.setPickerTransCol();
+            if (this.color[0] === '#') {
+                var rgba = this.hex2rgba(this.color);
+                this.preview.css({'background-color': 'rgba(' + rgba[0] + ',' + rgba[1] + ',' + rgba[2] + ',' + rgba[3] + ')'});
+            } else {
+                this.preview.css({'background-color': 'transparent'});
+            }
         }
         
         /******
@@ -182,6 +181,13 @@
                 picker.setColor();
                 picker.setPickerTransCol();
             });
+            this.place.bind('change', function(e){
+                picker.getColor();
+                picker.initSelected();
+            });
+            this.preview.filter('.colpickertool-hidebutton').bind('click', function(e){
+                picker.picker.toggleClass('colpickertool-hidden');
+            });
         }
         
         /******
@@ -196,18 +202,75 @@
         }
         
         /******
+         * Hex to rgba
+         ******/
+        ColPicker.prototype.hex2rgba = function(hex){
+            hex = hex + '#ffffffff'.slice(hex.length);
+            var rgb = hex.substr(1,6);
+            var alpha = hex.substr(7,2) || 'ff';
+            var num = parseInt(rgb, 16);
+            var r = (num >> 16) % 256;
+            var g = (num >> 8) % 256;
+            var b = num % 256;
+            var a = parseInt(alpha, 16) / 255;
+            return [r, g, b, a];
+        }
+
+        /******
+         * Named colors
+         ******/
+        ColPicker.prototype.colornames = {
+            'black':     '#000000',
+            'white':     '#ffffff',
+            'red'  :     '#ff0000',
+            'green':     '#00ff00',
+            'blue' :     '#0000ff',
+            'yellow':    '#ffff00',
+            'orange':    '#ff6600',
+            'darkred':   '#aa0000',
+            'darkgreen': '#00aa00',
+            'darkblue':  '#0000aa',
+            'navy':      '#000080',
+            'navyblue':  '#000080',
+            'sky':       '#87ceeb',
+            'skyblue':   '#87ceeb',
+            'steel':     '#4682b4',
+            'steelblue': '#4682b4',
+            'royal':     '#4169e1', 
+            'royalblue': '#4169e1',
+            'aqua':      '#00ffff',
+            'cyan':      '#00ffff',
+            'magenta':   '#ff00ff',
+            'fuchsia':   '#ff00ff',
+            'brown':     '#a52a2a',
+            'chocolate': '#d2691e',
+            'pink':      '#ffc0cb',
+            'lime':      '#32cd32',
+            'olive':     '#6b8e23',
+            'silver':    '#c0c0c0',
+            'gray':      '#808080',
+            'none' :     'none'
+        }
+        
+        /******
          * Some strings (css, svg)
          ******/
         ColPicker.strings = {
             css: [
                 '.colpickertool {background-color: transparent;}',
+                '.colpickertool-preview {display: inline-block; height: 1.5em; width: 2em; border: 1px solid black; vertical-align: middle; margin-left: 0.5em; background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCI+CjxyZWN0IHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0iI2ZmZiI+PC9yZWN0Pgo8cmVjdCB3aWR0aD0iMTAiIGhlaWdodD0iMTAiIGZpbGw9IiNjY2MiPjwvcmVjdD4KPHJlY3QgeD0iMTAiIHk9IjEwIiB3aWR0aD0iMTAiIGhlaWdodD0iMTAiIGZpbGw9IiNjY2MiPjwvcmVjdD4KPC9zdmc+");}',
+                '.colpickertool-preview .colorpreview {display: block; height: 100%;}',
+                '.colpickertool-preview .colpickertool-hidebutton {cursor: pointer}',
+                '.colpickertool-hidden {display: none;}',
                 '.colpickertool svg {width: 100%; height: auto;}',
                 '.colpickertool svg path.color-grayscale {stroke: black; stroke-width: 1}',
                 '.colpickertool svg path[data-color]:hover {cursor: pointer;}',
                 '.colpickertool svg rect[data-opacity]:hover {cursor: pointer;}',
                 '.colpickertool svg path.color-dark:hover {stroke-width: 2; stroke: white;}',
                 '.colpickertool svg path.color-light:hover {stroke-width: 2; stroke: white;}',
-                '.colpickertool [data-selected-color="true"], .colpickertool [data-selected-opacity="true"] {stroke: black; stroke-width: 3; stroke-opacity: 1;}'
+                '.colpickertool svg path[data-selected-color="true"], .colpickertool svg rect[data-selected-opacity="true"] {stroke: black; stroke-width: 3; stroke-opacity: 1;}',
+                '.colpickertool svg path.color-grayscale[data-selected-color="true"] {stroke: red;}',
+                'input.colpicker-input {max-width: 100%; width: 6.3em; font-family: monospace; -moz-box-sizing: border-box; box-sizing: border-box;}'
             ].join('\n'),
             svg: [
                 '  <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="220" height="110" viewbox="-15 -5 230 110" class="colorpicker">',

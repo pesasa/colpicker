@@ -1,51 +1,45 @@
-.content {
-    max-width: 1024px;
-    margin: 0 auto;
-    padding: 1em;
-    border-radius: 1em;
-    border: 1px solid #dde;
-    background-color: #eef;
-    box-shadow: 0 0 5px #aae;
+html, body {
+    margin: 0;
+    padding: 0;
 }
 
-h1, h2, h3, h4, h5 {
-    color: #005;
+header {
+    border: 1px solid black;
+    padding: 0.3em 3em;
+    background: rgb(69,72,77); /* Old browsers */
+    background: -moz-linear-gradient(top,  rgba(69,72,77,1) 0%, rgba(0,0,0,1) 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(69,72,77,1)), color-stop(100%,rgba(0,0,0,1))); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  rgba(69,72,77,1) 0%,rgba(0,0,0,1) 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  rgba(69,72,77,1) 0%,rgba(0,0,0,1) 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  rgba(69,72,77,1) 0%,rgba(0,0,0,1) 100%); /* IE10+ */
+    background: linear-gradient(to bottom,  rgba(69,72,77,1) 0%,rgba(0,0,0,1) 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#45484d', endColorstr='#000000',GradientType=0 ); /* IE6-9 */
 }
 
-.content h1 {
-    border-bottom: 6px double #005;
-}
-
-.content h2 {
-    margin-top: 3em;
+header h1, header h2 {
     color: white;
-    background-color: #005;
-    border-radius: 1em;
-    padding: 0.1em 1em;
+    text-shadow: -2px -2px 2px black, 1px 1px 2px white;
 }
 
-.content code {
-    font-weight: bold;
-    background-color: white;
+header h1 .versionnum {
+    display: inline-block;
+    color: #f00;
+    text-shadow: none;
+    font-family: 'Comic Sans MS';
+    font-size: 170%;
+    position: relative;
+    bottom: -0.2em;
+    transform: rotate(20deg);
+    -moz-transform: rotate(20deg);
 }
 
-.content .codeexample {
-    font-family: monospace;
-    background-color: #111;
-    color: #8f8;
-    font-weight: bold;
-    font-size: 80%;
-    margin: 2em 2em;
-    padding: 0em 1em;
-    white-space: pre;
-    box-shadow: inset 3px 3px 3px rgba(255,255,255,0.5);
-    overflow-x: auto;
+article .box {
+    /*display: inline-block;*/
+    /*min-width: 40em;*/
+    /*min-height: 30em;*/
+    /*border: 1px solid black;*/
+    margin: 1em;
+    vertical-align: top;
+    border: 1px solid black;
 }
 
-.content ul.psg_gallerified {
-    margin: 1em 0;
-    padding: 1em 0;
-    border-top: 3px solid #005;
-    border-bottom: 3px solid #005;
-    background-color: rgba(255,255,255,0.5);
-}
