@@ -1,4 +1,26 @@
 /***
+The MIT License (MIT)
+
+Copyright (c) 2013 Petri Salmela
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+
 |Name|ColPicker|
 |Version|0.2|
 |Author|Petri Salmela (pesasa@iki.fi)|
@@ -20,6 +42,7 @@
 //{{{
 /**
  * Colorpicker (jQuery plugin).
+ * Petri Salmela <pesasa@iki.fi>
  **/
 
 (function ($) {
@@ -258,7 +281,7 @@
         ColPicker.strings = {
             css: [
                 '.colpickertool {background-color: transparent;}',
-                '.colpickertool-preview {display: inline-block; height: 1.5em; width: 2em; border: 1px solid black; vertical-align: middle; margin-left: 0.5em; background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCI+CjxyZWN0IHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0iI2ZmZiI+PC9yZWN0Pgo8cmVjdCB3aWR0aD0iMTAiIGhlaWdodD0iMTAiIGZpbGw9IiNjY2MiPjwvcmVjdD4KPHJlY3QgeD0iMTAiIHk9IjEwIiB3aWR0aD0iMTAiIGhlaWdodD0iMTAiIGZpbGw9IiNjY2MiPjwvcmVjdD4KPC9zdmc+");}',
+                '.colpickertool-preview {display: block; height: 1.5em; border: 1px solid black; vertical-align: middle; margin: 0.2em; background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCI+CjxyZWN0IHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0iI2ZmZiI+PC9yZWN0Pgo8cmVjdCB3aWR0aD0iMTAiIGhlaWdodD0iMTAiIGZpbGw9IiNjY2MiPjwvcmVjdD4KPHJlY3QgeD0iMTAiIHk9IjEwIiB3aWR0aD0iMTAiIGhlaWdodD0iMTAiIGZpbGw9IiNjY2MiPjwvcmVjdD4KPC9zdmc+");}',
                 '.colpickertool-preview .colorpreview {display: block; height: 100%;}',
                 '.colpickertool-preview .colpickertool-hidebutton {cursor: pointer}',
                 '.colpickertool-hidden {display: none;}',
@@ -270,7 +293,7 @@
                 '.colpickertool svg path.color-light:hover {stroke-width: 2; stroke: white;}',
                 '.colpickertool svg path[data-selected-color="true"], .colpickertool svg rect[data-selected-opacity="true"] {stroke: black; stroke-width: 3; stroke-opacity: 1;}',
                 '.colpickertool svg path.color-grayscale[data-selected-color="true"] {stroke: red;}',
-                'input.colpicker-input {max-width: 100%; width: 6.3em; font-family: monospace; -moz-box-sizing: border-box; box-sizing: border-box;}'
+                'input.colpicker-input {max-width: 100%; width: 100%; font-family: monospace; -moz-box-sizing: border-box; box-sizing: border-box;}'
             ].join('\n'),
             svg: [
                 '  <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="220" height="110" viewbox="-15 -5 230 110" class="colorpicker">',
