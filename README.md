@@ -6,6 +6,10 @@ A simple rgba colorpicker as jQuery-plugin. [Demo page](http://pesasa.github.io/
 Gives a nice ui for selecting color from palette instead of inputing
 rgba as hexacode.
 
+License
+-------
+[MIT-license](http://opensource.org/licenses/MIT)
+
 Usage
 -----
 Show input field with hex-value and preview area. Preview area is clickable
