@@ -33,6 +33,10 @@ header h1 .versionnum {
     -moz-transform: rotate(20deg);
 }
 
+article {
+    margin: 1em;
+}
+
 article .box {
     /*display: inline-block;*/
     /*min-width: 40em;*/
@@ -40,6 +44,5 @@ article .box {
     /*border: 1px solid black;*/
     margin: 1em;
     vertical-align: top;
-    border: 1px solid black;
+    /* border: 1px solid black; */
 }
-

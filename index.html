@@ -1,29 +1,90 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Colorpicker</title>
+        <title>SimplePalette and Colorpicker</title>
         <meta charset="UTF-8">
         <link type="text/css" rel="stylesheet" media="all" href="style.css" />
         <script type="text/javascript" src="jquery.min.js"></script>
         <script type="text/javascript" src="jquery.colpicker.js"></script>
+        <script type="text/javascript" src="jquery.simplepalette.js"></script>
         <script type="text/javascript">
             jQuery(function(){
                 jQuery('#colorbox1').colpicker({showInput: true, hiddable: true});
                 jQuery('#colorbox2').colpicker({width: 400, showInput: true});
+                jQuery('#colorbox3').simplepalette({
+                    width: 400,
+                    showInput: false
+                });
+                jQuery('#colorbox4').simplepalette({
+                    width: 400,
+                    showInput: true,
+                    palettes: [
+                        'cappuccino',
+                        'princesspink',
+                        'pinksigns',
+                        'purerosequartz',
+                        'bluespinkandgreen',
+                        'cannibalplants',
+                        '80s',
+                        'beach',
+                        'brighteyesandsummerskies',
+                        'sunsetinthewoods',
+                        'rainbowdash',
+                        'armycamouflage'
+                    ]
+                });
+                jQuery('#colorbox5').simplepalette({
+                    width: 400,
+                    showInput: true,
+                    outputHex: true,
+                    palettes: [
+                        'googlecolors',
+                        'metrostyle',
+                        'ubuntu',
+                        'tango',
+                        'tangoaluminium',
+                        'grayscale'
+                    ]
+                });
             });
         </script>
     </head>
     <body>
         <header>
-            <h1>Colpicker</h1>
-            <h2>RGBA-colorselector</h2>
+            <h1>SimplePalette and Colpicker</h1>
+            <h2>RGBA-colorselectors</h2>
         </header>
         <article>
+            <p>
+                SimplePalette without input field.
+            </p>
+            <div class="box">
+                <input id="colorbox3" type="text"  />
+            </div>
+            <p>
+                SimplePalette with input field. (For palettes, thanks to <a href="https://www.color-hex.com/color-palettes/">https://www.color-hex.com/color-palettes/</a>)
+            </p>
+            <div class="box">
+                <input id="colorbox4" type="text"  />
+                <input id="colorbox5" type="text"  />
+            </div>
+            <p>
+                Colpicker with palette hidden.
+            </p>
             <div class="box" style="width: 150px;">
                 <input id="colorbox1" type="text" />
             </div>
+            <p>
+                Colpicker with palette visible and scaled bigger.
+            </p>
             <div class="box">
                 <input id="colorbox2" type="text" />
+            </div>
+            <p>
+                Browser's native input[type="color"].
+            </p>
+            <div class="box">
+                <input id="colorbox0" type="color"  />
             </div>
         </article>
         <div id="mathpanel"></div>
