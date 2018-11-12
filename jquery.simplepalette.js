@@ -128,8 +128,11 @@ THE SOFTWARE.
 
             this.dialog.off('click', '.simplepalettetool-color').on('click', '.simplepalettetool-color', function(event) {
                 let color = $(this).attr('data-color');
+                picker.dialog.find('.simplepalettetool-currentcolor').removeClass('simplepalettetool-currentcolor');
+                $(this).addClass('simplepalettetool-currentcolor');
                 picker.setColor(color);
                 picker.writeColor();
+                picker.hideDialog();
             });
 
         };
@@ -156,20 +159,31 @@ THE SOFTWARE.
             let output = (
                 this.options.outputHex
                 ? this.rgba2hex(this.rgba)
-                : `rgba(${this.rgba.join(',')})`
+                : (this.rgba ? `rgba(${this.rgba.join(',')})` : '')
             );
             this.place.val(output);
+            this.place.trigger('change');
         };
 
         setPreview() {
-            let rgba = (Array.isArray(this.rgba) ? `rgba(${this.rgba.join(',')})` : 'none');
-            this.preview.css({'background-color': rgba});
+            let rgba = (Array.isArray(this.rgba) ? `rgba(${this.rgba.join(',')})` : '');
+            if (rgba === '') {
+                this.preview.addClass('color_is_none');
+            } else {
+                this.preview.removeClass('color_is_none');
+            }
+            this.preview.css({'background-color': (rgba ? rgba : 'white')});
         };
 
         showDialog() {
             let picker = this;
             this.dialog.addClass('simplepalettetool-show');
             this.dialogIsOpen = true;
+            if (this.options.side === 'up') {
+                this.dialog.addClass('simplepalettetool-side-up');
+            } else {
+                this.dialog.removeClass('simplepalettetool-side-up');
+            };
             $('body').on('click.simplepaletteback', function(event) {
                 picker.hideDialog();
             });
@@ -215,8 +229,11 @@ THE SOFTWARE.
                         if (this.isDark(color)) {
                             classes.push('simplepalettetool-isdark');
                         };
+                        if (!col) {
+                            classes.push('color_is_none');
+                        }
                         html.push(`
-                            <div class="${classes.join(' ')}" data-color="${col}" style="background-color: ${col};"></div>
+                            <div class="${classes.join(' ')}" data-color="${col ? col : 'none'}" style="background-color: ${col ? col : 'white'};"></div>
                         `);
                     };
                     html.push(`</div>`, `</div>`);
@@ -233,15 +250,19 @@ THE SOFTWARE.
          * Hex to rgba
          ******/
         hex2rgba(hex){
-            hex = hex + '#ffffffff'.slice(hex.length);
-            let rgb = hex.substr(1,6);
-            let alpha = hex.substr(7,2) || 'ff';
-            let num = parseInt(rgb, 16);
-            let r = (num >> 16) % 256;
-            let g = (num >> 8) % 256;
-            let b = num % 256;
-            let a = parseInt(alpha, 16) / 255;
-            return [r, g, b, a];
+            let result = '';
+            if (hex !== 'none') {
+                hex = hex + '#ffffffff'.slice(hex.length);
+                let rgb = hex.substr(1,6);
+                let alpha = hex.substr(7,2) || 'ff';
+                let num = parseInt(rgb, 16);
+                let r = (num >> 16) % 256;
+                let g = (num >> 8) % 256;
+                let b = num % 256;
+                let a = parseInt(alpha, 16) / 255;
+                result = [r, g, b, a];
+            };
+            return result;
         };
 
         /**
@@ -464,6 +485,12 @@ THE SOFTWARE.
                 '#ffffff','#eeeeec','#d3d7cf','#babdb6',
                 '#888a85','#555753','#2e3436','#000000'
             ]
+        },
+        'special': {
+            name: 'Special',
+            colors: [
+                '#00000000', ''
+            ]
         }
     }
 
@@ -496,6 +523,13 @@ THE SOFTWARE.
                 min-height: 1em;
                 border: 1px solid #555;
             }
+            .simplepalettetool-preview.color_is_none::before {
+                content: "\u00d7";
+                color: #111;
+                font-size: 13px;
+                display: block;
+                text-align: center;
+            }
             .simplepalettetool-dialog {
                 display: none;
                 z-index: 100;
@@ -506,6 +540,10 @@ THE SOFTWARE.
                 background-color: #ddd;
                 border: 1px solid #aaa;
                 box-shadow: 5px 5px 10px rgba(0,0,0,0.3);
+            }
+            .simplepalettetool-dialog.simplepalettetool-side-up {
+                bottom: 0;
+                margin-bottom: 2em;
             }
             .simplepalettetool-dialog.simplepalettetool-show {
                 display: block;
@@ -546,6 +584,11 @@ THE SOFTWARE.
             }
             .simplepalettetool-color.simplepalettetool-currentcolor.simplepalettetool-isdark::before {
                 color: #ffffff;
+            }
+            .simplepalettetool-color.color_is_none::before {
+                content: "\u00d7";
+                color: #111!important;
+                font-size: 13px;
             }
         </style>
     `;
