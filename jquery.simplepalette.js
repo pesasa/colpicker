@@ -233,7 +233,7 @@ THE SOFTWARE.
                             classes.push('color_is_none');
                         }
                         html.push(`
-                            <div class="${classes.join(' ')}" data-color="${col ? col : 'none'}" style="background-color: ${col ? col : 'white'};"></div>
+                            <div class="${classes.join(' ')}" data-color="${col ? col : 'none'}" title="${col ? col : 'none'}" style="background-color: ${col ? col : 'white'};"></div>
                         `);
                     };
                     html.push(`</div>`, `</div>`);
